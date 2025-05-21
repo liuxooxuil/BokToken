@@ -304,6 +304,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "buyBack",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "decimals",
 				"outputs": [
@@ -311,6 +324,19 @@
 						"internalType": "uint8",
 						"name": "",
 						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "deploymentTime",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -706,11 +732,11 @@
 			]
 		},
 		"contracts/CC/CCToken.sol": {
-			"keccak256": "0x04029d35581e7cae77b5d3bce243d058d640b6981712e3791c4f766ae8805fa2",
+			"keccak256": "0x9ef7fc8c21dcb8fdf2a48e5013d1b1b7460802a3c981f5804dec354a2efd9ac3",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://1d291a6b02170ca3ae42bd91b9544aba0c224f1030febd77421a38f2dbee3335",
-				"dweb:/ipfs/QmPj1mVyYo4vmsDehnft5oSwwivSp388iQGrq3MGToogTT"
+				"bzz-raw://08baf42a52da0df89c15b72af2902035e0d24cb17d2dcae5355780e26afb721f",
+				"dweb:/ipfs/QmZRxveKbMbxrg3qv5ZRNLRXboNb2AtRwGyYtWeTtHLX1C"
 			]
 		},
 		"https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol": {

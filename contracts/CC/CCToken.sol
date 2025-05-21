@@ -62,10 +62,11 @@ contract CSYDToken is ERC20, Ownable {
 
     TeamMember[] private teamMembers;    
     // address[] private teamAddresses; // 投资者地址
+    uint256 public deploymentTime; // 记录发币时间
     uint256 public teamLockedUntil;
     address public uniswapPool;
 
-
+    // 发布的代币记录一下发币时间的 在五年之后 才可进行回购 代币价值1.05进行回购 第六年的可按1.06 以此内推 直至封顶的第十年的比例1.10 回购之后的代币归属 资金如何给执行回购操作人员
     constructor(TeamMember[] memory _teamMembers, address _uniswapPool) 
         ERC20("csyd", "CSYD")
         Ownable(msg.sender)
@@ -99,7 +100,7 @@ contract CSYDToken is ERC20, Ownable {
 
         teamLockedUntil = block.timestamp + TEAM_LOCK_PERIOD; // 锁仓设置
 
-        // 发布的代币记录一下发币时间的 在五年之后 才可进行回购 代币价值1.05进行回购 第六年的可按1.06 以此内推 直至封顶的第十年的比例1.10 回购之后的代币归属 资金如何给执行回购操作人员
+        deploymentTime = block.timestamp; // 记录发币时间
 
     }
 
@@ -137,5 +138,32 @@ contract CSYDToken is ERC20, Ownable {
 
     function getTeamMemberCount() public view returns (uint256) {
         return teamMembers.length; // 返回团队成员的数量
+    }
+
+    // 代币回购
+    function buyBack(uint256 amount) public onlyOwner {
+        require(deploymentTime > 0, "Deployment time not set");
+
+        uint256 yearsPassed = (block.timestamp - deploymentTime) / 365 days;
+
+        require(yearsPassed >= 5, "Five years have not passed yet");
+        // require(yearsPassed <= 10, "Maximum buyback period exceeded");
+
+        // 计算回购价格
+        uint256 multiplier = 105 + (yearsPassed - 5); // 1.05 到 1.10
+        uint256 buybackAmount = (amount * multiplier) / 100; // 计算需要支付的代币数量
+
+
+        // // 转移代币至uniswapPool地址
+        // IUniswapV3Pool pool = IUniswapV3Pool(uniswapPool); // 设置uniswap池的地址
+        
+        // uint256 quoteToken0Amount = (buybackAmount * buybackAmount) / ((1 ether + 7498 e18 )*pool.token0Price());// 计算代币0的数量
+        // pool.burn(quoteToken0Amount, true); // 回购     直入uniswap有可能会造成价格上升
+
+        // 确保合约有代币进行回购
+        // require(balanceOf(address(this)) >= buybackAmount, "Insufficient tokens in the contract"); // 暂时去除扣费
+
+        // 转移代币到发布者地址
+        _transfer(address(this), msg.sender, buybackAmount);
     }
 }
